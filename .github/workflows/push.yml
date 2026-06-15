@@ -1,0 +1,19 @@
+# Push to GitHub repository
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure Git
+        run: |
+          git config --global user.email "admin@netvault.local"
+          git config --global user.name "OneByJorah"
+      - name: Commit and Push
+        run: |
+          git add -A
+          git commit -m "chore: update files" || true
+          git push 2>/dev/null || echo "Already up to date"
