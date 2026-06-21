@@ -1,6 +1,6 @@
-# NetVault (NetVault)
+# NetVault — Network Backup & Asset Management
 
-**Version:** v0.1  
+**Version:** v1.0  
 **Status:** Active Development  
 **Repository:** https://github.com/OneByJorah/NetVault
 
@@ -24,49 +24,69 @@
 
 ## Overview
 
-Network backup and asset management tooling with API-driven inventory.
+NetVault is a network backup and asset management dashboard. It inventories devices, schedules backups, compares snapshots, restores data, and tracks alerts — all from a local web UI.
+
+Built for IT teams who want a single view into backup health and asset state.
 
 ---
 
 ## Architecture
 
-Client → Local service (`NetVault`) → data/processing modules → output/api layer.
-Secrets and environment configuration are managed via environment files with restrictive permissions.
+Client → Flask web UI → backend routes (`app/routes/`) → SQLAlchemy models (`app/models.py`) → storage backends (`rclone`, `paramiko`, GitHub API).
+
+Routes:
+- `/devices` — inventory
+- `/backup` — schedules and runs
+- `/restore` — restores from snapshots
+- `/compare` — diff snapshots
+- `/alerts` — alerting and status
+- `/sync` — remote sync
+- `/api` — JSON API
+
+Secrets are loaded via `config/default.conf`.
 
 ---
 
 ## Technology Stack
 
-|| Layer | Stack |
+| Layer | Stack |
 |---|---|
 | Runtime | Linux (Ubuntu 22.04+) |
-| Primary Stack | Python / FastAPI / SQLAlchemy |
+| Backend | Python / Flask / Flask-SQLAlchemy / Flask-Migrate |
+| Frontend | HTML + Jinja templates |
+| Networking | paramiko (SSH), rclone, PyGithub |
+| Auth | bcrypt |
 | VCS | Git + GitHub (`github.com/OneByJorah/NetVault`) |
-| Dev Port | Localhost / systemd service |
 
 ---
 
 ## Features
 
-- Operational dashboard and monitoring (per repo).
-- Exportable data / reports where supported.
-- Extensible service-based design.
-- Dark-themed UI where applicable.
+- **Device inventory**: track hosts and credentials.
+- **Backup scheduling**: run and log backup jobs.
+- **Compare snapshots**: diff prior and current backup sets.
+- **Restore**: recovery workflow from snapshots.
+- **Alerts**: alert state for devices and jobs.
+- **Cloud sync**: support for remote/sync targets.
 
 ---
 
 ## Getting Started
 
 ```bash
-# 1. Clone the repository
+# 1. Clone
 git clone https://github.com/OneByJorah/NetVault.git
 cd NetVault
 
-# 2. Install dependencies
-# (see specific subproject docs)
+# 2. Install
+pip install -r requirements.txt
 
-# 3. Start the service
-# (see Service Management below)
+# 3. Configure
+cp config/default.conf config/local.conf
+# Edit local.conf for your storage and credentials.
+
+# 4. Run
+python -m flask run
 ```
 
 ---
@@ -74,12 +94,12 @@ cd NetVault
 ## Service Management
 
 ```bash
-# Start the service (example)
-sudo systemctl start NetVault.service
-sudo systemctl enable NetVault.service
-```
+# Run
+python -m flask run
 
-Access the service via your configured localhost port or reverse proxy.
+# Stop
+Ctrl+C
+```
 
 ---
 
@@ -87,15 +107,40 @@ Access the service via your configured localhost port or reverse proxy.
 
 ```
 NetVault/
-├── README.md
-├── (additional project files)
+├── app/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── models.py
+│   └── routes/
+│       ├── __init__.py
+│       ├── alerts.py
+│       ├── api.py
+│       ├── backup.py
+│       ├── compare.py
+│       ├── devices.py
+│       ├── restore.py
+│       └── sync.py
+├── static/
+│   └── styles.css
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── devices.html
+│   ├── backup.html
+│   ├── restore.html
+│   ├── compare.html
+│   ├── alerts.html
+│   └── cloud.html
+├── config/
+│   └── default.conf
+├── requirements.txt
+├── setup.py
+└── init-db.sql
 ```
 
 ---
 
 ## Screenshots
-
-All screenshots are live captures from the local dev instance.
 
 _(Screenshots will be added after build/run capture.)_
 
@@ -104,7 +149,7 @@ _(Screenshots will be added after build/run capture.)_
 ## Contributing
 
 1. Create a feature branch off `main`.
-2. Follow the existing code style.
+2. Keep storage and credential logic in `config/`.
 3. Submit a PR with description and screenshots for UI changes.
 
 ---
