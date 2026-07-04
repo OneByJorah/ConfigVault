@@ -1,165 +1,81 @@
-# NetVault — Network Backup & Asset Management
+<div align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/Flask-000?style=for-the-badge&logo=flask&logoColor=white">
+  <img src="https://img.shields.io/badge/SQLAlchemy-FF6C37?style=for-the-badge&logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/rclone-00A6A6?style=for-the-badge&logo=googlecloud&logoColor=white">
+</div>
 
-**Version:** v1.0  
-**Status:** Active Development  
-**Repository:** https://github.com/OneByJorah/NetVault
+<br>
 
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Technology Stack](#technology-stack)
-- [Features](#features)
-- [Getting Started](#getting-started)
-- [Service Management](#service-management)
-- [Project Structure](#project-structure)
-- [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
-- [Author](#author)
-
----
-
-## Overview
-
-NetVault is a network backup and asset management dashboard. It inventories devices, schedules backups, compares snapshots, restores data, and tracks alerts — all from a local web UI.
-
-Built for IT teams who want a single view into backup health and asset state.
+<div align="center">
+  <h1>🛡️ NetVault</h1>
+  <p><strong>Network Backup & Asset Management Dashboard</strong></p>
+  <p>Centralized device inventory, backup scheduling, snapshot comparison, and alert tracking</p>
+  <p>
+    <a href="#-features">Features</a> •
+    <a href="#-quick-start">Quick Start</a> •
+    <a href="#-architecture">Architecture</a> •
+    <a href="#-api">API</a>
+  </p>
+</div>
 
 ---
 
-## Architecture
+## ✨ Features
 
-Client → Flask web UI → backend routes (`app/routes/`) → SQLAlchemy models (`app/models.py`) → storage backends (`rclone`, `paramiko`, GitHub API).
+- **Device Inventory** — Centralized network device management
+- **Backup Scheduling** — Automated backup jobs and logging
+- **Snapshot Comparison** — Diff between backup snapshots
+- **Data Restoration** — Recovery workflows for network devices
+- **Alert Tracking** — Monitor backup failures and issues
+- **Cloud Sync** — rclone integration for remote storage
+- **SSH Integration** — Paramiko for secure device connections
 
-Routes:
-- `/devices` — inventory
-- `/backup` — schedules and runs
-- `/restore` — restores from snapshots
-- `/compare` — diff snapshots
-- `/alerts` — alerting and status
-- `/sync` — remote sync
-- `/api` — JSON API
-
-Secrets are loaded via `config/default.conf`.
-
----
-
-## Technology Stack
-
-| Layer | Stack |
-|---|---|
-| Runtime | Linux (Ubuntu 22.04+) |
-| Backend | Python / Flask / Flask-SQLAlchemy / Flask-Migrate |
-| Frontend | HTML + Jinja templates |
-| Networking | paramiko (SSH), rclone, PyGithub |
-| Auth | bcrypt |
-| VCS | Git + GitHub (`github.com/OneByJorah/NetVault`) |
-
----
-
-## Features
-
-- **Device inventory**: track hosts and credentials.
-- **Backup scheduling**: run and log backup jobs.
-- **Compare snapshots**: diff prior and current backup sets.
-- **Restore**: recovery workflow from snapshots.
-- **Alerts**: alert state for devices and jobs.
-- **Cloud sync**: support for remote/sync targets.
-
----
-
-## Getting Started
+## 🚀 Quick Start
 
 ```bash
-# 1. Clone
 git clone https://github.com/OneByJorah/NetVault.git
 cd NetVault
-
-# 2. Install
 pip install -r requirements.txt
-
-# 3. Configure
-cp config/default.conf config/local.conf
-# Edit local.conf for your storage and credentials.
-
-# 4. Run
-python -m flask run
+python3 setup.py install
+# Or run directly
+python3 app.py
 ```
 
----
-
-## Service Management
-
-```bash
-# Run
-python -m flask run
-
-# Stop
-Ctrl+C
-```
-
----
-
-## Project Structure
+## 🏗️ Architecture
 
 ```
 NetVault/
-├── app/
-│   ├── __init__.py
-│   ├── config.py
-│   ├── models.py
-│   └── routes/
-│       ├── __init__.py
-│       ├── alerts.py
-│       ├── api.py
-│       ├── backup.py
-│       ├── compare.py
-│       ├── devices.py
-│       ├── restore.py
-│       └── sync.py
-├── static/
-│   └── styles.css
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── devices.html
-│   ├── backup.html
-│   ├── restore.html
-│   ├── compare.html
-│   ├── alerts.html
-│   └── cloud.html
-├── config/
-│   └── default.conf
-├── requirements.txt
-├── setup.py
-└── init-db.sql
+├── app/                       # Flask application
+│   ├── __init__.py            # App factory
+│   ├── config.py              # Configuration
+│   ├── models.py              # SQLAlchemy models
+│   └── routes/                # Route blueprints
+├── static/                    # Static assets (CSS, JS)
+├── templates/                 # Jinja2 templates
+├── config/                    # Configuration files
+├── docs/                      # Documentation
+└── requirements.txt           # Dependencies
 ```
 
----
+## 🔧 Key Routes
 
-## Screenshots
+| Endpoint | Description |
+|----------|-------------|
+| `/inventory` | Device inventory management |
+| `/backup` | Backup scheduling & logs |
+| `/snapshots` | Snapshot comparison & diff |
+| `/restore` | Data restoration workflows |
+| `/alerts` | Alert tracking & monitoring |
+| `/sync` | Remote synchronization |
 
-_(Screenshots will be added after build/run capture.)_
+## 📄 License
 
----
-
-## Contributing
-
-1. Create a feature branch off `main`.
-2. Keep storage and credential logic in `config/`.
-3. Submit a PR with description and screenshots for UI changes.
-
----
-
-## License
-
-MIT
+MIT © Jhonattan L. Jimenez
 
 ---
 
-## Author
-
-Built by **Jhonattan L. Jimenez**.
+<div align="center">
+  <p>🛡️ Your network backups, centralized</p>
+  <p><a href="https://github.com/OneByJorah">@OneByJorah</a></p>
+</div>
