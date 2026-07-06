@@ -30,3 +30,6 @@ dist/
 # Database
 *.db
 *.sqlite
+
+# Pipeline reports
+reports/
