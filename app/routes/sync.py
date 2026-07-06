@@ -1,5 +1,4 @@
 import subprocess
-from functools import wraps
 
 from flask import Blueprint, jsonify, request
 
@@ -8,7 +7,6 @@ from app.config import CLOUD_SYNC, RCLONE_CONFIG, SECRET_KEY
 bp = Blueprint("sync", __name__, url_prefix="/api/v1/sync")
 
 def token_required(f):
-    @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get("Authorization", "").replace("Bearer ", "")
         if not token or token != SECRET_KEY:

@@ -1,5 +1,3 @@
-from functools import wraps
-
 from flask import Blueprint, jsonify, request
 
 from app import db
@@ -9,7 +7,6 @@ from app.models import Backup, Device
 bp = Blueprint("restore", __name__, url_prefix="/api/v1/restore")
 
 def token_required(f):
-    @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get("Authorization", "").replace("Bearer ", "")
         if not token or token != SECRET_KEY:

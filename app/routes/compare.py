@@ -1,5 +1,3 @@
-from functools import wraps
-
 from flask import Blueprint, jsonify, request
 
 from app.config import SECRET_KEY
@@ -7,7 +5,6 @@ from app.config import SECRET_KEY
 bp = Blueprint("compare", __name__, url_prefix="/api/v1/compare")
 
 def token_required(f):
-    @wraps(f)
     def decorated(*args, **kwargs):
         token = request.headers.get("Authorization", "").replace("Bearer ", "")
         if not token or token != SECRET_KEY:
