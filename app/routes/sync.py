@@ -4,6 +4,9 @@ from flask import Blueprint, jsonify, request
 
 from app.config import CLOUD_SYNC, RCLONE_CONFIG, SECRET_KEY
 
+# Allowed cloud types for rclone sync
+ALLOWED_CLOUD_TYPES = {"s3", "gdrive", "onedrive", "b2", "dropbox"}
+
 bp = Blueprint("sync", __name__, url_prefix="/api/v1/sync")
 
 def token_required(f):
@@ -20,17 +23,30 @@ def trigger_sync():
     if not CLOUD_SYNC:
         return jsonify({"error": "Cloud sync is disabled"}), 503
 
-    remote_path = request.get_json().get("remote_path", "/var/lib/netvault/backup")
-    cloud_type = request.get_json().get("cloud_type", "s3")
-    cloud_path = request.get_json().get("cloud_path", "")
+    data = request.get_json() or {}
+    remote_path = data.get("remote_path", "/var/lib/netvault/backup")
+    cloud_type = data.get("cloud_type", "s3")
+    cloud_path = data.get("cloud_path", "")
+
+    # Validate cloud_type against allowed list to prevent command injection
+    if cloud_type not in ALLOWED_CLOUD_TYPES:
+        return jsonify({"error": f"Invalid cloud type: {cloud_type}"}), 400
+
+    # Validate cloud_path: only allow safe characters
+    if not all(c.isalnum() or c in "/_-." for c in cloud_path):
+        return jsonify({"error": "Invalid cloud path characters"}), 400
+
+    # Validate remote_path: only allow safe characters
+    if not all(c.isalnum() or c in "/_-." for c in remote_path):
+        return jsonify({"error": "Invalid remote path characters"}), 400
 
     try:
         # Run rclone sync
         cmd = [
             "rclone",
             "sync",
-            f"/var/lib/netvault/backup",
-            f"{cloud_type}://{cloud_path}",
+            remote_path,
+            f"{cloud_type}:{cloud_path}",
             "--progress",
         ]
 
