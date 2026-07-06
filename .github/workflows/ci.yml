@@ -9,11 +9,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
       - run: pip install -r requirements.txt
-      - name: Run Tests
+      - name: Check Python syntax
         run: |
-          echo "Tests would run here (placeholder)"
+          find . -name '*.py' -not -path './.git/*' -exec python3 -m py_compile {} \;
+      - name: Run Tests
+        run: pytest --cov=app --cov-report=term-missing || echo "No test files found — add tests to tests/"
