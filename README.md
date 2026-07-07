@@ -21,6 +21,11 @@
 
 ---
 
+## 📸 Screenshot
+
+![NetVault Dashboard](docs/dashboard.png)
+*Network backup and asset management dashboard with device inventory, backup scheduling, and snapshot comparison*
+
 ## ✨ Features
 
 - **Device Inventory** — Centralized network device management

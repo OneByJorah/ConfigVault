@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "hostname": "router-core-00",
+    "ip": "10.0.0.1",
+    "vendor": "Ubiquiti",
+    "model": "EdgeRouter-12",
+    "os_version": "IOS-XE 17.3",
+    "status": "offline",
+    "last_backup": "2026-07-06",
+    "config_size": 32013
+  },
+  {
+    "id": 2,
+    "hostname": "router-edge-01",
+    "ip": "10.0.0.2",
+    "vendor": "Juniper",
+    "model": "EdgeRouter-12",
+    "os_version": "EdgeOS 2.0",
+    "status": "online",
+    "last_backup": "2026-07-06",
+    "config_size": 54527
+  },
+  {
+    "id": 3,
+    "hostname": "router-dist-02",
+    "ip": "10.0.0.3",
+    "vendor": "Cisco",
+    "model": "EdgeRouter-12",
+    "os_version": "JunOS 22.1",
+    "status": "online",
+    "last_backup": "2026-07-06",
+    "config_size": 38462
+  },
+  {
+    "id": 4,
+    "hostname": "router-access-03",
+    "ip": "10.0.0.4",
+    "vendor": "Cisco",
+    "model": "ISR4331",
+    "os_version": "RouterOS 7.9",
+    "status": "offline",
+    "last_backup": "2026-07-06",
+    "config_size": 62589
+  },
+  {
+    "id": 5,
+    "hostname": "router-core-04",
+    "ip": "10.0.1.5",
+    "vendor": "Ubiquiti",
+    "model": "ISR4331",
+    "os_version": "JunOS 22.1",
+    "status": "offline",
+    "last_backup": "2026-07-06",
+    "config_size": 29015
+  },
+  {
+    "id": 6,
+    "hostname": "router-edge-05",
+    "ip": "10.0.1.6",
+    "vendor": "Juniper",
+    "model": "MX204",
+    "os_version": "EdgeOS 2.0",
+    "status": "online",
+    "last_backup": "2026-07-06",
+    "config_size": 36473
+  },
+  {
+    "id": 7,
+    "hostname": "router-dist-06",
+    "ip": "10.0.1.7",
+    "vendor": "Ubiquiti",
+    "model": "EdgeRouter-12",
+    "os_version": "EdgeOS 2.0",
+    "status": "offline",
+    "last_backup": "2026-07-06",
+    "config_size": 36312
+  },
+  {
+    "id": 8,
+    "hostname": "router-access-07",
+    "ip": "10.0.1.8",
+    "vendor": "Juniper",
+    "model": "ISR4331",
+    "os_version": "JunOS 22.1",
+    "status": "offline",
+    "last_backup": "2026-07-06",
+    "config_size": 52172
+  },
+  {
+    "id": 9,
+    "hostname": "router-core-08",
+    "ip": "10.0.2.9",
+    "vendor": "MikroTik",
+    "model": "ISR4331",
+    "os_version": "RouterOS 7.9",
+    "status": "offline",
+    "last_backup": "2026-07-06",
+    "config_size": 24867
+  },
+  {
+    "id": 10,
+    "hostname": "router-edge-09",
+    "ip": "10.0.2.10",
+    "vendor": "Ubiquiti",
+    "model": "MX204",
+    "os_version": "IOS-XE 17.3",
+    "status": "online",
+    "last_backup": "2026-07-06",
+    "config_size": 10042
+  },
+  {
+    "id": 11,
+    "hostname": "router-dist-10",
+    "ip": "10.0.2.11",
+    "vendor": "Cisco",
+    "model": "CCR1036",
+    "os_version": "EdgeOS 2.0",
+    "status": "offline",
+    "last_backup": "2026-07-06",
+    "config_size": 50494
+  },
+  {
+    "id": 12,
+    "hostname": "router-access-11",
+    "ip": "10.0.2.12",
+    "vendor": "MikroTik",
+    "model": "ISR4331",
+    "os_version": "JunOS 22.1",
+    "status": "online",
+    "last_backup": "2026-07-06",
+    "config_size": 20155
+  }
+]
