@@ -16,7 +16,7 @@ def token_required(f):
 @token_required
 def api_root():
     return jsonify({
-        "service": "NetVault NOC API",
+        "service": "ConfigVault NOC API",
         "version": "1.0.0",
         "endpoints": {
             "devices": "/api/v1/devices",

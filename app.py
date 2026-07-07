@@ -1,4 +1,4 @@
-"""Entry point for NetVault NOC application.
+"""Entry point for ConfigVault NOC application.
 
 Usage:
     python3 app.py

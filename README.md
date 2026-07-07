@@ -8,7 +8,7 @@
 <br>
 
 <div align="center">
-  <h1>🛡️ NetVault</h1>
+  <h1>🛡️ ConfigVault</h1>
   <p><strong>Network Backup & Asset Management Dashboard</strong></p>
   <p>Centralized device inventory, backup scheduling, snapshot comparison, and alert tracking</p>
   <p>
@@ -34,8 +34,8 @@
 ## 🚀 Quick Start
 
 ```bash
-git clone https://github.com/OneByJorah/NetVault.git
-cd NetVault
+git clone https://github.com/OneByJorah/ConfigVault.git
+cd ConfigVault
 pip install -r requirements.txt
 python3 setup.py install
 # Or run directly
@@ -45,7 +45,7 @@ python3 app.py
 ## 🏗️ Architecture
 
 ```
-NetVault/
+ConfigVault/
 ├── app/                       # Flask application
 │   ├── __init__.py            # App factory
 │   ├── config.py              # Configuration

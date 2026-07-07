@@ -1,4 +1,4 @@
-"""Configuration settings for NetVault NOC."""
+"""Configuration settings for ConfigVault NOC."""
 
 import os
 
