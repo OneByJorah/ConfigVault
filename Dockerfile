@@ -50,6 +50,9 @@ RUN mkdir -p /app/config
 # Set ownership
 RUN chown -R netvault:netvault /app /data /config /var/lib/netvault /etc/netvault
 
+# Ensure data directory is writable
+RUN mkdir -p /app/data && chmod 777 /app/data
+
 # Switch to non-root user
 USER netvault
 
@@ -62,4 +65,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
 
 # Run with gunicorn (production WSGI server)
 # The app uses create_app() factory from app/__init__.py
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "app:create_app()"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "app:create_app()"]

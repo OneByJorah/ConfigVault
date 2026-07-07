@@ -1,6 +1,7 @@
 #!/bin/bash
 # NetVault Docker Entrypoint
 # Handles first-run setup and credential onboarding
+# Auto-generates defaults when running non-interactively (no TTY)
 
 set -e
 
@@ -10,25 +11,33 @@ if [ ! -f /app/.env ]; then
     echo "  NetVault — First Run Setup"
     echo "============================================"
     echo ""
-    echo "No configuration found. Let's set up NetVault."
-    echo ""
     
     # Generate random secret
     SECRET=$(python3 -c "import secrets; print(secrets.token_hex(32))")
+    ADMIN_PASS=$(python3 -c "import secrets; print(secrets.token_urlsafe(16))")
     
-    # Prompt for config
-    read -p "Admin username [admin]: " ADMIN_USER
-    ADMIN_USER=${ADMIN_USER:-admin}
-    
-    read -s -p "Admin password (leave blank for random): " ADMIN_PASS
-    echo ""
-    ADMIN_PASS=${ADMIN_PASS:-$(python3 -c "import secrets; print(secrets.token_urlsafe(16))")}
-    
-    read -p "Database path [data/netvault.db]: " DB_PATH
-    DB_PATH=${DB_PATH:-data/netvault.db}
-    
-    read -p "Port [5000]: " PORT
-    PORT=${PORT:-5000}
+    # Check if running interactively
+    if [ -t 0 ]; then
+        # Interactive mode
+        read -p "Admin username [admin]: " ADMIN_USER
+        ADMIN_USER=${ADMIN_USER:-admin}
+        
+        read -s -p "Admin password (leave blank for random): " ADMIN_PASS_INPUT
+        echo ""
+        ADMIN_PASS=${ADMIN_PASS_INPUT:-$ADMIN_PASS}
+        
+        read -p "Database path [data/netvault.db]: " DB_PATH
+        DB_PATH=${DB_PATH:-data/netvault.db}
+        
+        read -p "Port [5000]: " PORT
+        PORT=${PORT:-5000}
+    else
+        # Non-interactive mode — use defaults
+        echo "Non-interactive mode — using auto-generated defaults"
+        ADMIN_USER="admin"
+        DB_PATH="data/netvault.db"
+        PORT=5000
+    fi
     
     # Write .env
     cat > /app/.env <<EOF

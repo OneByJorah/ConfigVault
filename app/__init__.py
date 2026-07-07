@@ -1,16 +1,15 @@
 import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_cors import CORS
+
+db = SQLAlchemy()
+migrate = Migrate()
+cors = CORS()
 
 
 def create_app():
-    from flask import Flask
-    from flask_cors import CORS
-    from flask_migrate import Migrate
-    from flask_sqlalchemy import SQLAlchemy
-
-    db = SQLAlchemy()
-    migrate = Migrate()
-    CORS()
-
     app = Flask(__name__)
 
     # Load config
@@ -34,12 +33,13 @@ def create_app():
 
     app.config.update({
         "SECRET_KEY": config.get("SECRET_KEY", "dev-secret-key"),
-        "DATABASE_URL": config.get("DATABASE_URL", "sqlite:///netvault.db"),
+        "SQLALCHEMY_DATABASE_URI": config.get("DATABASE_URL", "sqlite:///netvault.db"),
         "SERVER_NAME": config.get("SERVER_NAME", "netvault.local"),
     })
 
     db.init_app(app)
-    migrate.init_app(app)
+    migrate.init_app(app, db)
+    cors.init_app(app)
 
     # Import routes
     from app.routes import alerts, api, backup, compare, devices, restore, sync
