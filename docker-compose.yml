@@ -1,0 +1,66 @@
+# =============================================================================
+# NetVault NOC — docker-compose.yml
+# =============================================================================
+
+services:
+  netvault:
+    image: jorahone/netvault:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: netvault
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      # SQLite database persistence
+      - netvault_data:/data
+      # Configuration persistence
+      - netvault_config:/config
+      # Backup storage
+      - netvault_backups:/var/lib/netvault
+    environment:
+      - SERVER_NAME=${SERVER_NAME:-netvault.local}
+      - SECRET_KEY=${SECRET_KEY:-change-me-to-a-random-secret}
+      - DATABASE_URL=${DATABASE_URL:-sqlite:////data/netvault.db}
+      - FTP_ENABLED=${FTP_ENABLED:-true}
+      - FTP_HOST=${FTP_HOST:-127.0.0.1}
+      - FTP_PORT=${FTP_PORT:-21}
+      - FTP_USER=${FTP_USER:-netvault}
+      - FTP_PASS=${FTP_PASS:-netvault123}
+      - SFTP_ENABLED=${SFTP_ENABLED:-true}
+      - SFTP_HOST=${SFTP_HOST:-127.0.0.1}
+      - SFTP_PORT=${SFTP_PORT:-22}
+      - TFTP_ENABLED=${TFTP_ENABLED:-true}
+      - TFTP_HOST=${TFTP_HOST:-127.0.0.1}
+      - TFTP_PORT=${TFTP_PORT:-69}
+      - TFTP_ROOT=${TFTP_ROOT:-/var/lib/netvault/tftp}
+      - OXIDIZED_ENABLED=${OXIDIZED_ENABLED:-true}
+      - OXIDIZED_URL=${OXIDIZED_URL:-http://localhost:8080}
+      - OXIDIZED_API_KEY=${OXIDIZED_API_KEY:-}
+      - GIT_ENABLED=${GIT_ENABLED:-true}
+      - GIT_REPO=${GIT_REPO:-/var/lib/netvault/configs}
+      - GIT_BRANCH=${GIT_BRANCH:-main}
+      - CLOUD_SYNC=${CLOUD_SYNC:-false}
+      - RCLONE_CONFIG=${RCLONE_CONFIG:-/etc/netvault/rclone.conf}
+      - SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
+      - TEAMS_WEBHOOK=${TEAMS_WEBHOOK:-}
+      - DISCORD_WEBHOOK=${DISCORD_WEBHOOK:-}
+      - EMAIL_ENABLED=${EMAIL_ENABLED:-false}
+      - EMAIL_SERVER=${EMAIL_SERVER:-}
+      - EMAIL_USER=${EMAIL_USER:-}
+      - EMAIL_PASS=${EMAIL_PASS:-}
+    networks:
+      - netvault_net
+
+volumes:
+  netvault_data:
+    driver: local
+  netvault_config:
+    driver: local
+  netvault_backups:
+    driver: local
+
+networks:
+  netvault_net:
+    driver: bridge
