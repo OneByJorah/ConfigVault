@@ -11,7 +11,7 @@ jobs:
       - name: Configure Git
         run: |
           git config --global user.email "bot@netvault.local"
-          git config --global user.name "NetVault Bot"
+          git config --global user.name "ConfigVault Bot"
       - name: Commit and Push
         run: |
           git add -A
