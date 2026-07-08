@@ -21,9 +21,9 @@ def create_app():
             config = yaml.safe_load(f)
     else:
         config = {
-            "SERVER_NAME": "netvault.local",
+            "SERVER_NAME": "configvault.local",
             "SECRET_KEY": "dev-secret-key",
-            "DATABASE_URL": "sqlite:///netvault.db",
+            "DATABASE_URL": "sqlite:///configvault.db",
             "FTP_ENABLED": True,
             "SFTP_ENABLED": True,
             "TFTP_ENABLED": True,
@@ -34,8 +34,8 @@ def create_app():
 
     app.config.update({
         "SECRET_KEY": config.get("SECRET_KEY", "dev-secret-key"),
-        "DATABASE_URL": config.get("DATABASE_URL", "sqlite:///netvault.db"),
-        "SERVER_NAME": config.get("SERVER_NAME", "netvault.local"),
+        "DATABASE_URL": config.get("DATABASE_URL", "sqlite:///configvault.db"),
+        "SERVER_NAME": config.get("SERVER_NAME", "configvault.local"),
     })
 
     db.init_app(app)

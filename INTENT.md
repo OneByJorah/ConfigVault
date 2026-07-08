@@ -64,7 +64,7 @@ ConfigVault fills the gap between **heavy commercial NMS** and **fragile shell s
 
 ### What Triggered Development
 
-The initial commit (`accd36b`, 2026-06-15) is titled *"Initial commit: Build complete NetVault NOC platform"* — a **greenfield project** that shipped 27 files and 2,450 lines of code in a single commit. The original README (604 lines) was far more detailed than the current one, including:
+The initial commit (`accd36b`, 2026-06-15) is titled *"Initial commit: Build complete ConfigVault NOC platform"* — a **greenfield project** that shipped 27 files and 2,450 lines of code in a single commit. The original README (604 lines) was far more detailed than the current one, including:
 
 - Full Mermaid architecture diagrams showing the system topology
 - Detailed setup instructions for FTP (vsftpd), SFTP (OpenSSH), TFTP (tftpd-hpa), and Oxidized
@@ -179,7 +179,7 @@ ConfigVault/
 │   │   └── feature_request.md     # Feature request template
 │   └── PULL_REQUEST_TEMPLATE.md   # PR template with checklist
 ├── requirements.txt               # Python dependencies
-├── setup.py                       # Package setup (j1-netvault v1.0.0)
+├── setup.py                       # Package setup (j1-configvault v1.0.0)
 ├── README.md                      # Project documentation
 ├── LICENSE                        # MIT License
 ├── CODE_OF_CONDUCT.md             # Contributor Covenant v2.1
@@ -234,7 +234,7 @@ ConfigVault/
 
 7. **`compare.py` has demo fallback** — The `load_config()` function returns a hardcoded sample config with a comment "In production, this would read from the actual backup file. For demo, return a sample config." This is demo/placeholder code in a production-classified repo.
 
-8. **`push.yml` workflow** — Contains a hardcoded email (`admin@netvault.local`) and an auto-commit-and-push pattern that could cause issues. The latest commit (`2e1cb37`) sanitized email references.
+8. **`push.yml` workflow** — Contains a hardcoded email (`admin@configvault.local`) and an auto-commit-and-push pattern that could cause issues. The latest commit (`2e1cb37`) sanitized email references.
 
 9. **No test files found** — The `test.yml` workflow runs `pytest --cov=app`, but no test files exist in the repo. Tests would all pass with 0% coverage.
 
