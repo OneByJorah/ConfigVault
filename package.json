@@ -1,0 +1,26 @@
+{
+  "name": "configvault",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">   <img src=\"https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white\">   <img src=\"https://img.shields.io/badge/Flask-000?style=for-the-badge&logo=flask&logoColor=white\">   <img src=\"https://img.shields.io/badge/SQLAlchemy-FF6C37?style=for-the-badge&logo=python&logoColor=white\">   <img src=\"https://img.shields.io/badge/rclone-00A6A6?style=for-the-badge&logo=googlecloud&logoColor=white\"> </div>",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OneByJorah/ConfigVault.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OneByJorah/ConfigVault/issues"
+  },
+  "homepage": "https://github.com/OneByJorah/ConfigVault#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}

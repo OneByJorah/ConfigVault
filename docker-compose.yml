@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  configvault:
+    build: .
+    container_name: configvault
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./instance:/app/instance
+      - ./config:/app/config
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=0
+      - SQLALCHEMY_DATABASE_URI=sqlite:///instance/configvault.db
+    restart: unless-stopped

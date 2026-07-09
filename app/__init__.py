@@ -1,14 +1,15 @@
 import os
 
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
+db = SQLAlchemy()
+migrate = Migrate()
 
 def create_app():
     from flask import Flask
     from flask_cors import CORS
-    from flask_migrate import Migrate
-    from flask_sqlalchemy import SQLAlchemy
 
-    db = SQLAlchemy()
-    migrate = Migrate()
     CORS()
 
     app = Flask(__name__)
@@ -35,11 +36,12 @@ def create_app():
     app.config.update({
         "SECRET_KEY": config.get("SECRET_KEY", "dev-secret-key"),
         "DATABASE_URL": config.get("DATABASE_URL", "sqlite:///configvault.db"),
+        "SQLALCHEMY_DATABASE_URI": config.get("DATABASE_URL", "sqlite:///configvault.db"),
         "SERVER_NAME": config.get("SERVER_NAME", "configvault.local"),
     })
 
     db.init_app(app)
-    migrate.init_app(app)
+    migrate.init_app(app, db)
 
     # Import routes
     from app.routes import alerts, api, backup, compare, devices, restore, sync
@@ -53,7 +55,7 @@ def create_app():
 
     @app.route("/")
     def index():
-        from flask import redirect
-        return redirect("/dashboard")
+        from flask import jsonify
+        return jsonify({"status": "ok", "service": "ConfigVault"})
 
     return app
