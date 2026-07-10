@@ -33,3 +33,4 @@ dist/
 
 # Pipeline reports
 reports/
+node_modules/

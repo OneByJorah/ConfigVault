@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Blueprint, jsonify, request
 
 from app.config import SECRET_KEY
@@ -5,12 +6,13 @@ from app.config import SECRET_KEY
 bp = Blueprint("api", __name__, url_prefix="/api/v1")
 
 def token_required(f):
-    def decorated(*args, **kwargs):
+    @wraps(f)
+    def decorated_api(*args, **kwargs):
         token = request.headers.get("Authorization", "").replace("Bearer ", "")
         if not token or token != SECRET_KEY:
             return jsonify({"error": "Unauthorized"}), 401
         return f(*args, **kwargs)
-    return decorated
+    return decorated_api
 
 @bp.route("/")
 @token_required

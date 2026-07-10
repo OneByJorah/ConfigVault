@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from functools import wraps
 from flask import Blueprint, jsonify, request
 
 from app import db
@@ -9,12 +10,13 @@ from app.models import Alert
 bp = Blueprint("alerts", __name__, url_prefix="/api/v1/alerts")
 
 def token_required(f):
-    def decorated(*args, **kwargs):
+    @wraps(f)
+    def decorated_alerts(*args, **kwargs):
         token = request.headers.get("Authorization", "").replace("Bearer ", "")
         if not token or token != SECRET_KEY:
             return jsonify({"error": "Unauthorized"}), 401
         return f(*args, **kwargs)
-    return decorated
+    return decorated_alerts
 
 @bp.route("/", methods=["GET"])
 @token_required

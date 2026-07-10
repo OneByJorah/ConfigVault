@@ -1,5 +1,6 @@
 import subprocess
 
+from functools import wraps
 from flask import Blueprint, jsonify, request
 
 from app.config import CLOUD_SYNC, RCLONE_CONFIG, SECRET_KEY
@@ -10,12 +11,13 @@ ALLOWED_CLOUD_TYPES = {"s3", "gdrive", "onedrive", "b2", "dropbox"}
 bp = Blueprint("sync", __name__, url_prefix="/api/v1/sync")
 
 def token_required(f):
-    def decorated(*args, **kwargs):
+    @wraps(f)
+    def decorated_sync(*args, **kwargs):
         token = request.headers.get("Authorization", "").replace("Bearer ", "")
         if not token or token != SECRET_KEY:
             return jsonify({"error": "Unauthorized"}), 401
         return f(*args, **kwargs)
-    return decorated
+    return decorated_sync
 
 @bp.route("/", methods=["POST"])
 @token_required
