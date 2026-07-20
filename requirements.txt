@@ -4,3 +4,4 @@ Flask-Migrate>=4.1.0
 Flask-CORS>=6.0.5
 PyYAML>=6.0.3
 paramiko>=5.0.0
+pytest>=8.0.0

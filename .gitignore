@@ -30,7 +30,11 @@ dist/
 # Database
 *.db
 *.sqlite
+instance/
 
 # Pipeline reports
 reports/
 node_modules/
+
+# Local env
+.env

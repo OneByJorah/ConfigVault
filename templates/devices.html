@@ -9,14 +9,21 @@
             <thead>
                 <tr><th>Name</th><th>Hostname</th><th>IP Address</th><th>OS Type</th><th>Protocol</th><th>Port</th><th>Status</th></tr>
             </thead>
-            <tbody>
-                <tr><td>cisco-rtr-1</td><td>192.168.1.1</td><td>192.168.1.1</td><td>IOS-XE</td><td>SSH</td><td>22</td><td>✅ Active</td></tr>
-                <tr><td>juniper-sw-2</td><td>192.168.1.2</td><td>192.168.1.2</td><td>JunOS</td><td>SSH</td><td>22</td><td>✅ Active</td></tr>
-                <tr><td>arista-swt-3</td><td>192.168.1.3</td><td>192.168.1.3</td><td>EOS</td><td>SSH</td><td>22</td><td>✅ Active</td></tr>
-                <tr><td>fortigate-fw-4</td><td>192.168.1.4</td><td>192.168.1.4</td><td>FortiOS</td><td>SSH</td><td>22</td><td>⚠️ Warning</td></tr>
-                <tr><td>mikrotik-ap-5</td><td>192.168.1.5</td><td>192.168.1.5</td><td>RouterOS</td><td>SSH</td><td>22</td><td>✅ Active</td></tr>
-                <tr><td>cisco-rtr-6</td><td>192.168.1.6</td><td>192.168.1.6</td><td>IOS-XE</td><td>SSH</td><td>22</td><td>✅ Active</td></tr>
-            </tbody>
+        <tbody>
+            {% for d in devices %}
+            <tr>
+                <td>{{ d.name }}</td>
+                <td>{{ d.hostname or '—' }}</td>
+                <td>{{ d.ip_address or '—' }}</td>
+                <td>{{ d.os_type or '—' }}</td>
+                <td>{{ d.protocol or 'ssh' }}</td>
+                <td>{{ d.port or 22 }}</td>
+                <td>{% if d.enabled %}✅ Active{% else %}⚠️ Disabled{% endif %}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7">No devices yet.</td></tr>
+            {% endfor %}
+        </tbody>
         </table>
     </div>
     <div class="section">

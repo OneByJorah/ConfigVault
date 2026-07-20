@@ -26,9 +26,6 @@ def trigger_restore():
     backup = Backup.query.filter_by(version=commit).first_or_404()
     device = Device.query.filter_by(name=target).first_or_404()
 
-    device.config_path = backup.config_file
-    db.session.commit()
-
     return jsonify({
         "message": f"Config {commit} restored to {target}",
         "commit": commit,

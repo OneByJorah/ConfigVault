@@ -12,7 +12,12 @@ def create_app():
 
     CORS()
 
-    app = Flask(__name__)
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    app = Flask(
+        __name__,
+        template_folder=os.path.join(base_dir, "templates"),
+        static_folder=os.path.join(base_dir, "static"),
+    )
 
     # Load config
     config_file = os.path.join(os.path.dirname(__file__), "..", "config", "default.conf")
@@ -34,17 +39,23 @@ def create_app():
         }
 
     app.config.update({
-        "SECRET_KEY": config.get("SECRET_KEY", "dev-secret-key"),
-        "DATABASE_URL": config.get("DATABASE_URL", "sqlite:///configvault.db"),
-        "SQLALCHEMY_DATABASE_URI": config.get("DATABASE_URL", "sqlite:///configvault.db"),
-        "SERVER_NAME": config.get("SERVER_NAME", "configvault.local"),
+        "SECRET_KEY": os.getenv("SECRET_KEY", config.get("SECRET_KEY", "dev-secret-key")),
+        "DATABASE_URL": os.getenv("DATABASE_URL", config.get("DATABASE_URL", "sqlite:///configvault.db")),
+        "SQLALCHEMY_DATABASE_URI": os.getenv("DATABASE_URL", config.get("DATABASE_URL", "sqlite:///configvault.db")),
     })
 
     db.init_app(app)
     migrate.init_app(app, db)
+    app.url_map.strict_slashes = False
+
+    @app.cli.command("seed")
+    def seed_command():
+        """Populate the database with demo data for local preview."""
+        from app.seed import seed
+        print(seed())
 
     # Import routes
-    from app.routes import alerts, api, backup, compare, devices, restore, sync
+    from app.routes import alerts, api, backup, compare, devices, restore, sync, web
     app.register_blueprint(devices.bp)
     app.register_blueprint(backup.bp)
     app.register_blueprint(restore.bp)
@@ -52,10 +63,6 @@ def create_app():
     app.register_blueprint(alerts.bp)
     app.register_blueprint(sync.bp)
     app.register_blueprint(api.bp)
-
-    @app.route("/")
-    def index():
-        from flask import jsonify
-        return jsonify({"status": "ok", "service": "ConfigVault"})
+    app.register_blueprint(web.bp)
 
     return app
