@@ -1,81 +1,60 @@
-<div align="center">
-  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white">
-  <img src="https://img.shields.io/badge/Flask-000?style=for-the-badge&logo=flask&logoColor=white">
-  <img src="https://img.shields.io/badge/SQLAlchemy-FF6C37?style=for-the-badge&logo=python&logoColor=white">
-  <img src="https://img.shields.io/badge/rclone-00A6A6?style=for-the-badge&logo=googlecloud&logoColor=white">
-</div>
+# ConfigVault
 
-<br>
+Network backup and asset management dashboard — centralized device inventory, backup scheduling, snapshot comparison, and alert tracking.
 
-<div align="center">
-  <h1>🛡️ ConfigVault</h1>
-  <p><strong>Network Backup & Asset Management Dashboard</strong></p>
-  <p>Centralized device inventory, backup scheduling, snapshot comparison, and alert tracking</p>
-  <p>
-    <a href="#-features">Features</a> •
-    <a href="#-quick-start">Quick Start</a> •
-    <a href="#-architecture">Architecture</a> •
-    <a href="#-api">API</a>
-  </p>
-</div>
+![status](https://img.shields.io/badge/status-active-FFB300?style=flat-square)
+![language](https://img.shields.io/badge/python-3.10+-0d0d0c?style=flat-square)
+![license](https://img.shields.io/badge/license-MIT-FFB300?style=flat-square)
 
----
+## Overview
 
-## ✨ Features
+ConfigVault is a self-hosted network backup and asset management dashboard that provides centralized device inventory, automated backup scheduling, snapshot comparison, data restoration workflows, and alert tracking. It integrates rclone for cloud sync and Paramiko (SSH) for secure device connections. Built with Flask and SQLAlchemy.
 
-- **Device Inventory** — Centralized network device management
-- **Backup Scheduling** — Automated backup jobs and logging
-- **Snapshot Comparison** — Diff between backup snapshots
-- **Data Restoration** — Recovery workflows for network devices
-- **Alert Tracking** — Monitor backup failures and issues
-- **Cloud Sync** — rclone integration for remote storage
-- **SSH Integration** — Paramiko for secure device connections
+## Features
 
-## 🚀 Quick Start
+- Device inventory — centralized network device management
+- Backup scheduling — automated backup jobs and logging
+- Snapshot comparison — diff between backup snapshots
+- Data restoration — recovery workflows for network devices
+- Alert tracking — monitor backup failures and issues
+- Cloud sync — rclone integration for remote storage
+- SSH integration — Paramiko for secure device connections
+- Flask + SQLAlchemy web dashboard
+
+## Architecture / Tech Stack
+
+- **Backend**: Flask (Python), SQLAlchemy
+- **Database**: SQLite / PostgreSQL
+- **Storage**: rclone (cloud sync)
+- **SSH**: Paramiko
+- **Deployment**: Docker Compose, local install
+
+## Installation
 
 ```bash
 git clone https://github.com/OneByJorah/ConfigVault.git
 cd ConfigVault
+
 pip install -r requirements.txt
 python3 setup.py install
+
 # Or run directly
 python3 app.py
+
+# Or Docker
+docker compose up -d
 ```
 
-## 🏗️ Architecture
+## Usage
 
-```
-ConfigVault/
-├── app/                       # Flask application
-│   ├── __init__.py            # App factory
-│   ├── config.py              # Configuration
-│   ├── models.py              # SQLAlchemy models
-│   └── routes/                # Route blueprints
-├── static/                    # Static assets (CSS, JS)
-├── templates/                 # Jinja2 templates
-├── config/                    # Configuration files
-├── docs/                      # Documentation
-└── requirements.txt           # Dependencies
-```
+1. Open the web dashboard
+2. Add your network devices
+3. Configure backup schedules
+4. Monitor alerts and compare snapshots
 
-## 🔧 Key Routes
+## License
 
-| Endpoint | Description |
-|----------|-------------|
-| `/inventory` | Device inventory management |
-| `/backup` | Backup scheduling & logs |
-| `/snapshots` | Snapshot comparison & diff |
-| `/restore` | Data restoration workflows |
-| `/alerts` | Alert tracking & monitoring |
-| `/sync` | Remote synchronization |
-
-## 📄 License
-
-MIT © Jhonattan L. Jimenez
+MIT — see [LICENSE](LICENSE).
 
 ---
-
-<div align="center">
-  <p>🛡️ Your network backups, centralized</p>
-  <p><a href="https://github.com/OneByJorah">@OneByJorah</a></p>
-</div>
+Part of the JorahOne / J1 ecosystem — network config backup and asset tracking.
