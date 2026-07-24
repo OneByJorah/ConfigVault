@@ -34,3 +34,6 @@ dist/
 # Pipeline reports
 reports/
 node_modules/
+
+# OneByJorah portfolio tooling
+.venv-screenshot/
