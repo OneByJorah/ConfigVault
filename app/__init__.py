@@ -7,15 +7,19 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 def create_app():
-    from flask import Flask
+    from flask import Flask, render_template
     from flask_cors import CORS
 
     CORS()
 
-    app = Flask(__name__)
+    _root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    app = Flask(
+        __name__,
+        template_folder=os.path.join(_root, "templates"),
+        static_folder=os.path.join(_root, "static"),
+    )
 
-    # Load config
-    config_file = os.path.join(os.path.dirname(__file__), "..", "config", "default.conf")
+    config_file = os.path.join(_root, "config", "default.conf")
     if os.path.exists(config_file):
         import yaml
         with open(config_file) as f:
@@ -43,7 +47,6 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
-    # Import routes
     from app.routes import alerts, api, backup, compare, devices, restore, sync
     app.register_blueprint(devices.bp)
     app.register_blueprint(backup.bp)
@@ -54,8 +57,31 @@ def create_app():
     app.register_blueprint(api.bp)
 
     @app.route("/")
-    def index():
-        from flask import jsonify
-        return jsonify({"status": "ok", "service": "ConfigVault"})
+    def dashboard():
+        return render_template("index.html")
+
+    @app.route("/devices")
+    def devices_page():
+        return render_template("devices.html")
+
+    @app.route("/backup")
+    def backup_page():
+        return render_template("backup.html")
+
+    @app.route("/restore")
+    def restore_page():
+        return render_template("restore.html")
+
+    @app.route("/compare")
+    def compare_page():
+        return render_template("compare.html")
+
+    @app.route("/alerts")
+    def alerts_page():
+        return render_template("alerts.html")
+
+    @app.route("/cloud")
+    def sync_page():
+        return render_template("cloud.html")
 
     return app
