@@ -45,7 +45,6 @@ def get_device(device_id):
         "ip_address": device.ip_address,
         "os_type": device.os_type,
         "username": device.username,
-        "password": device.password,
         "protocol": device.protocol,
         "port": device.port,
         "enabled": device.enabled,

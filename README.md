@@ -18,7 +18,7 @@
     <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square">
   </p>
 
-  <img src="docs/assets/screenshot.png" alt="ConfigVault Dashboard Screenshot" width="90%">
+  <img src="docs/screenshots/dashboard.png" alt="ConfigVault Dashboard Screenshot" width="90%">
 </div>
 
 ---

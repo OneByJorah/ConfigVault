@@ -74,7 +74,7 @@ def create_alert():
         "id": alert.id,
         "type": alert_type,
         "level": level,
-        "message": message,
+        "alert_message": message,
     }), 201
 
 @bp.route("/<int:alert_id>", methods=["DELETE"])

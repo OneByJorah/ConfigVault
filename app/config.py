@@ -14,7 +14,7 @@ FTP_ENABLED = os.getenv("FTP_ENABLED", "true").lower() == "true"
 FTP_HOST = os.getenv("FTP_HOST", "127.0.0.1")
 FTP_PORT = int(os.getenv("FTP_PORT", "21"))
 FTP_USER = os.getenv("FTP_USER", "configvault")
-FTP_PASS = os.getenv("FTP_PASS", "configvault123")
+FTP_PASS = os.getenv("FTP_PASS", "")
 FTP_SSL = os.getenv("FTP_SSL", "true").lower() == "true"
 
 # SFTP

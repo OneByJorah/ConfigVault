@@ -19,7 +19,7 @@ COPY . .
 RUN mkdir -p /app/instance
 
 # Expose port
-EXPOSE 5000
+EXPOSE 8103
 
 # Run the application
 CMD ["python", "app.py"]

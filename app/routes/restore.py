@@ -26,7 +26,9 @@ def trigger_restore():
     backup = Backup.query.filter_by(version=commit).first_or_404()
     device = Device.query.filter_by(name=target).first_or_404()
 
-    device.config_path = backup.config_file
+    # Track restore via device backup counters; restore itself is a no-op
+    # placeholder until Paramiko push is wired in.
+    device.last_backup = db.func.now()
     db.session.commit()
 
     return jsonify({

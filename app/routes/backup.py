@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import wraps
 from flask import Blueprint, jsonify, request
 
@@ -32,12 +33,14 @@ def trigger_backup():
 
     backup = Backup(
         device_id=device.id,
-        version=f"{mode}-{db.func.now().strftime('%Y%m%d%H%M%S')}",
+        version=f"{mode}-{datetime.now().strftime('%Y%m%d%H%M%S')}",
         config_file=config,
         size=0,
         checksum="",
         status="running",
     )
+    device.backup_count = (device.backup_count or 0) + 1
+    device.last_backup = datetime.now()
     db.session.add(backup)
     db.session.commit()
 
