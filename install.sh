@@ -5,31 +5,30 @@ cd "$(dirname "$0")"
 
 echo "=== Installing ConfigVault ==="
 
-if ! command -v docker &> /dev/null; then
-    echo "Docker is required but not installed. Please install Docker first."
+if ! command -v python3 &> /dev/null; then
+    echo "Python 3 is required. Install from https://python.org/"
     exit 1
 fi
 
-if ! command -v docker-compose &> /dev/null && ! docker compose version &> /dev/null; then
-    echo "Docker Compose is required but not installed."
-    exit 1
+# Create virtual environment if it doesn't exist
+if [ ! -d venv ]; then
+    python3 -m venv venv
 fi
+
+./venv/bin/pip install --upgrade pip
+./venv/bin/pip install -r requirements.txt
 
 if [ ! -f .env ]; then
-    if [ -f .env.example ]; then
-        cp .env.example .env
-        echo "Created .env from .env.example. Please review and set real values before production use."
-    else
-        echo "No .env.example found; creating empty .env"
-        touch .env
-    fi
+    cp .env.example .env
+    echo "Created .env from .env.example. Set SECRET_KEY and other values before production use."
 fi
 
-echo "Building and starting ConfigVault on port 8103..."
-if docker compose version &> /dev/null; then
-    docker compose up --build -d
-else
-    docker-compose up --build -d
-fi
+# Ensure persistence directories exist
+mkdir -p instance config configs
 
-echo "ConfigVault installed. Access: http://localhost:8103"
+echo ""
+echo "ConfigVault installed. Start it with:"
+echo "  ./venv/bin/python app.py"
+echo ""
+echo "Or use Docker:"
+echo "  docker compose up -d"

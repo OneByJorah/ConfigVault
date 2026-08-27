@@ -37,3 +37,8 @@ node_modules/
 
 # OneByJorah portfolio tooling
 .venv-screenshot/
+venv-configvault/
+.env
+instance/
+configs/
+configvault.db
