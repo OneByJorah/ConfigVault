@@ -1,111 +1,67 @@
 <div align="center">
 
+![ConfigVault banner](docs/assets/banner.svg)
+
 # ConfigVault
 
-**Network Configuration Backup & Asset Management Dashboard**
+**The self-hosted network configuration backup and asset manager for small NOC teams — inventory devices, schedule backups, diff snapshots, and sync to cloud storage.**
 
-[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Flask-3.1-000?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
-[![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-D71F00?logo=python&logoColor=white)](https://www.sqlalchemy.org/)
-[![Paramiko](https://img.shields.io/badge/Paramiko-5.0-4B8BBE?logo=python&logoColor=white)](https://www.paramiko.org/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=fff)](docker-compose.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<a href="https://github.com/OneByJorah/ConfigVault/stargazers"><img src="https://img.shields.io/github/stars/OneByJorah/ConfigVault?style=flat-square" alt="Stars"></a>
+<a href="https://github.com/OneByJorah/ConfigVault/commits"><img src="https://img.shields.io/github/last-commit/OneByJorah/ConfigVault?style=flat-square" alt="Last commit"></a>
+<img src="https://img.shields.io/github/license/OneByJorah/ConfigVault?style=flat-square" alt="License">
+<img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.11+">
+<img src="https://img.shields.io/badge/Flask-3-000000?style=flat-square&logo=flask&logoColor=white" alt="Flask 3">
+<img src="https://img.shields.io/badge/SQLAlchemy-2.0-D71F00?style=flat-square" alt="SQLAlchemy 2.0">
 
 </div>
 
-<p align="center">
-  <img src="docs/screenshots/configvault-dashboard.png" alt="ConfigVault Dashboard" width="90%">
-</p>
+![ConfigVault dashboard](docs/assets/screenshot.png)
 
----
+## What This Is
 
-## Overview
+ConfigVault gives small network teams a lightweight, self-hosted alternative to heavyweight NMS suites for one job done well: keeping router, switch, firewall, and AP configurations backed up and auditable. It inventories devices, runs config backups over SSH/SFTP (Paramiko), stores every snapshot with a checksum, and shows side-by-side diffs between versions.
 
-ConfigVault is a lightweight NOC-style dashboard for managing network-device configuration backups. It gives small teams a simple web UI to inventory routers, switches, firewalls, and APs; schedule backups; compare snapshots; and push history to cloud storage via rclone.
-
-### Why ConfigVault?
-
-| Concern | ConfigVault Approach |
-|---------|---------------------|
-| **Single-node deploy** | Flask + SQLite runs anywhere |
-| **No cloud lock-in** | Self-hosted; optional rclone sync |
-| **SSH/SFTP safety** | Paramiko; keys/secrets via env only |
-| **No database server** | SQLite default; PostgreSQL ready |
-
-## Features
-
-| Feature | Status | Description |
-|---------|--------|-------------|
-| Device Inventory | ✅ | Manage routers, switches, firewalls, and APs |
-| Backup Scheduling | ✅ | Trigger backups manually or via cron hooks |
-| Snapshot Diff | ✅ | Side-by-side config comparison |
-| Config Restore | ✅ | Roll back to any historical backup |
-| Alert Engine | ✅ | Slack, Teams, Discord, email webhooks |
-| Cloud Sync | ⚙️ | rclone integration (bring your own config) |
-| SSH Integration | ✅ | Paramiko-based SSH/SFTP to devices |
-| NOC Dashboard | ✅ | Dark-theme web UI with live status cards |
+Everything runs from a single Flask process with SQLite by default — no database server, no cloud lock-in, and optional rclone sync to S3, Google Drive, OneDrive, B2, or Dropbox.
 
 ## Quick Start
-
-### Local (virtualenv)
 
 ```bash
 git clone https://github.com/OneByJorah/ConfigVault.git
 cd ConfigVault
-./install.sh          # creates venv, installs deps, copies .env.example
-. ./venv/bin/activate
-python app.py         # http://localhost:8103
+cp .env.example .env      # set SECRET_KEY (and DATABASE_URL for Postgres)
+docker compose up -d
 ```
 
-On Windows:
+Open **http://localhost:8103**.
 
-```powershell
-python -m venv venv
-.\venv\Scripts\pip install -r requirements.txt
-.\venv\Scripts\python app.py
-```
+> [!NOTE]
+> `docker compose` mounts `./instance` for the SQLite DB and `./configs` for git-backed history. To run without Docker, use `./install.sh` then `python app.py`.
 
-### Docker Compose
+## Features
 
-```bash
-cp .env.example .env   # edit SECRET_KEY and any optional settings
-docker compose up -d   # http://localhost:8103
-```
-
-> **Note:** ConfigVault defaults to SQLite with persistent `./instance` and `./configs` directories mounted into the container. For production, switch to PostgreSQL by setting `DATABASE_URL`.
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| **Backend** | Python 3.11, Flask 3, Flask-SQLAlchemy, Flask-Migrate |
-| **Frontend** | Jinja2 templates + Bootstrap/custom CSS |
-| **SSH/SFTP** | Paramiko |
-| **Database** | SQLite (default), PostgreSQL (optional) |
-| **Cloud Sync** | rclone (optional) |
-| **Container** | Docker / Docker Compose |
-
-## Screenshots
-
-| Dashboard |
-|:--:|
-| <img src="docs/screenshots/configvault-dashboard.png" alt="ConfigVault Dashboard" width="100%"> |
+- **Device inventory** — track routers, switches, firewalls, and APs with hostname, IP, OS type, protocol, and port.
+- **Scheduled & on-demand backups** — trigger backups per device or list/create schedules through the API; history is git-backed.
+- **Snapshot diff** — compare any two config versions to see added, removed, and changed lines.
+- **Config restore** — roll a device back to a historical backup commit.
+- **Alert engine** — Slack, Microsoft Teams, Discord, and email webhook notifications.
+- **Optional cloud sync** — rclone integration for S3, Google Drive, OneDrive, B2, and Dropbox (off by default).
+- **Protocol integrations** — FTP, SFTP, TFTP, and Oxidized hooks (all disabled by default for safer deployments).
+- **Dark NOC UI** — Jinja2 templates with a responsive dashboard for devices, backups, restores, compares, alerts, and cloud sync.
 
 ## Architecture
 
 ```
 ┌─────────────┐     HTTP      ┌──────────────────┐     ┌──────────────┐
-│   Browser   │ ──────────▶   │  Flask (NOC UI)  │────▶│  SQLAlchemy  │
+│   Browser   │ ──────────▶   │  Flask NOC UI    │────▶│  SQLAlchemy  │
 │  (Dark UX)  │ ◀──────────── │  Port 8103       │◀────│  SQLite/PG   │
 └─────────────┘               └──────────────────┘     └──────────────┘
                                        │
                      ┌─────────────────┼─────────────────┐
-                     ▼                 ▼                  ▼
+                     ▼                 ▼                 ▼
              ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
              │   Paramiko   │  │    rclone    │  │ Alert Engine │
-             │   SSH/SFTP   │  │  Cloud Sync  │  │ Slack/Email  │
+             │   SSH/SFTP   │  │  Cloud Sync  │  │ Webhooks     │
              └──────┬───────┘  └──────┬───────┘  └──────────────┘
-                    │                 │
                     ▼                 ▼
              ┌──────────────┐  ┌──────────────┐
              │   Network    │  │  S3 / GDrive │
@@ -113,119 +69,77 @@ docker compose up -d   # http://localhost:8103
              └──────────────┘  └──────────────┘
 ```
 
-## Project Structure
-
-```
-ConfigVault/
-├── app/                      # Flask application package
-│   ├── __init__.py           # Application factory
-│   ├── config.py             # Environment-based configuration
-│   ├── models.py             # SQLAlchemy ORM models
-│   └── routes/               # API route blueprints
-│       ├── devices.py
-│       ├── backup.py
-│       ├── restore.py
-│       ├── compare.py
-│       ├── alerts.py
-│       ├── sync.py
-│       └── api.py
-├── templates/                # Jinja2 HTML templates
-├── static/                   # Static assets (CSS/JS)
-├── config/                   # YAML runtime configuration
-├── instance/                 # SQLite database storage (created at runtime)
-├── configs/                  # Git-backed config history (created at runtime)
-├── docs/                     # Documentation & assets
-│   └── screenshots/
-├── app.py                    # Entry point
-├── requirements.txt          # Python dependencies
-├── Dockerfile                # Container image
-├── docker-compose.yml        # Compose stack
-├── install.sh                # Linux/macOS installer
-├── .env.example              # Environment template
-└── setup.py                  # Package installer
-```
-
 ## Configuration
 
-ConfigVault reads environment variables first, then falls back to `config/default.conf`. Create `.env` from `.env.example` and set at least `SECRET_KEY`.
+ConfigVault reads environment variables first, then falls back to `config/default.conf`.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DATABASE_URL` | `sqlite:///instance/configvault.db` | SQLAlchemy database URI |
 | `SERVER_NAME` | `configvault.local` | Server hostname |
-| `SECRET_KEY` | `dev-secret-key` | Flask secret key — **change this** |
+| `SECRET_KEY` | `dev-secret-key` | Flask secret + API bearer token — **change this** |
 | `FTP_ENABLED` | `false` | Enable FTP backup target |
 | `SFTP_ENABLED` | `false` | Enable SFTP backup target |
+| `TFTP_ENABLED` | `false` | Enable TFTP backup target |
 | `OXIDIZED_ENABLED` | `false` | Enable Oxidized integration |
+| `GIT_ENABLED` | `true` | Git-backed config history |
 | `CLOUD_SYNC` | `false` | Enable rclone cloud sync |
-| `SLACK_WEBHOOK` | — | Slack webhook URL |
-| `DISCORD_WEBHOOK` | — | Discord webhook URL |
-| `TEAMS_WEBHOOK` | — | Microsoft Teams webhook |
+| `SLACK_WEBHOOK` / `TEAMS_WEBHOOK` / `DISCORD_WEBHOOK` | — | Notification webhooks |
+| `EMAIL_ENABLED` / `EMAIL_SERVER` | `false` / — | Email notification settings |
 
-> For security, disable unused protocols (`FTP_ENABLED=false`, etc.) and never commit credentials to git.
+> [!WARNING]
+> Write endpoints are protected by a shared bearer token equal to `SECRET_KEY`. Set a strong value and never commit real credentials to git.
 
 ## API Endpoints
 
+All routes are prefix `/api/v1`. Write operations require an `Authorization: Bearer <SECRET_KEY>` header.
+
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/api/v1/health` | `GET` | Health check |
-| `/api/v1/config` | `GET` | App configuration |
-| `/api/v1/devices` | `GET` | List devices |
-| `/api/v1/devices` | `POST` | Add a device |
-| `/api/v1/backup` | `POST` | Trigger backup |
-| `/api/v1/backup/schedule` | `GET` | List schedules |
-| `/api/v1/restore` | `POST` | Restore config |
-| `/api/v1/compare` | `POST` | Diff snapshots |
-| `/api/v1/alerts` | `GET` | List alerts |
-| `/api/v1/sync` | `POST` | Push to cloud |
-| `/api/v1/sync/status` | `GET` | Sync status |
+| `/health` | GET | Health check |
+| `/config` | GET | App configuration summary |
+| `/devices` | GET/POST | List / add devices |
+| `/devices/{id}` | GET/PUT/DELETE | Read, update, or remove a device |
+| `/devices/{id}/backup` | POST | Trigger a device backup |
+| `/backup` | POST | Start a backup run |
+| `/backup/schedule` | GET/POST | List or create schedules |
+| `/backup/schedule/{id}` | DELETE | Remove a schedule |
+| `/restore` | POST | Restore a config version |
+| `/restore/{commit_id}` | GET | Inspect a restore commit |
+| `/compare` | POST | Diff two snapshots |
+| `/alerts` | GET/POST | List or create alerts |
+| `/alerts/{id}` | GET/DELETE | Read or delete an alert |
+| `/sync` | POST | Push backups to cloud storage |
+| `/sync/status` | GET | Cloud sync status |
 
-## Deployment
+## Use Cases
 
-### Docker (recommended for self-hosting)
+1. **Small NOCs** — replace ad-hoc TFTP/FTP backup scripts with a tracked, auditable inventory.
+2. **MSPs** — keep per-client device configs versioned and diffable before change windows.
+3. **Compliance** — retain restore points with checksums and push them off-box to cloud storage.
 
-```bash
-cp .env.example .env
-# edit .env — set SECRET_KEY, disable protocols you don't use
-docker compose up -d
-docker compose logs -f
-```
+## Tech Stack
 
-### Manual
+Python 3.11, Flask 3, Flask-SQLAlchemy, Flask-Migrate, Flask-CORS, Paramiko, PyYAML, SQLite/PostgreSQL, rclone, Docker Compose.
 
-```bash
-./install.sh
-source venv/bin/activate
-python app.py
-```
+## Screenshots
 
-## Upgrading
+| Dashboard | Devices | Compare |
+|---|---|---|
+| ![Dashboard](docs/screenshots/dashboard.png) | ![Devices](docs/screenshots/devices.png) | ![Compare](docs/screenshots/compare.png) |
 
-```bash
-git pull
-source venv/bin/activate
-pip install -r requirements.txt
-flask db upgrade
-```
+More captures live in [`docs/screenshots/`](docs/screenshots/).
 
 ## Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards.
-
-## Security
-
-Found a vulnerability? Please report to **security@example.com** per [SECURITY.md](SECURITY.md) — do not use public issues.
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). [Open an issue](https://github.com/OneByJorah/ConfigVault/issues) to report a bug or request a feature.
 
 ## License
 
-[MIT](LICENSE) © Jhonattan L. Jimenez (OneByJorah)
+MIT — see [LICENSE](LICENSE).
 
----
+## Connect
 
-<p align="center">
-  <a href="https://github.com/OneByJorah">OneByJorah</a>
-  ·
-  <a href="https://github.com/OneByJorah/ConfigVault/issues">Issues</a>
-  ·
-  <a href="CHANGELOG.md">Changelog</a>
-</p>
+- [jorahone.com](https://jorahone.com)
+- [GitHub Org](https://github.com/OneByJorah)
+- [info@jorahone.com](mailto:info@jorahone.com)
